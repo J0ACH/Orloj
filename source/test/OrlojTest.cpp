@@ -14,10 +14,11 @@ int main(int argc, char *argv[]) {
 
 
 OrlojTestApplication::OrlojTestApplication(QObject *parent) {
-	qDebug() << "OrlojTestApplication::new";
+	qDebug() << clock.now().secs();
+	clock.now().decomposeDate();
 	
-	connect(&clock, SIGNAL(timeout()), this, SLOT(onTick()));
-	clock.start(1000);
+	//connect(&clock, SIGNAL(timeout()), this, SLOT(onTick()));
+	//clock.start(1000);
 }
 
 void OrlojTestApplication::onTick() {

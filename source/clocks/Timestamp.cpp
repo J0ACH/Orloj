@@ -5,8 +5,16 @@ namespace Orloj {
 
 	// Timestamp /////////////////////////////////////////////////////
 
-	Timestamp::Timestamp() { epochSec = 0; nanoSec = 0; }
-	Timestamp::Timestamp(qint64 secs, qint64 nsecs) { epochSec = secs; nanoSec = nsecs; }
+	Timestamp::Timestamp() {
+		epochSec = 0;
+		nanoSec = 0;
+		tz = QTimeZone::systemTimeZone();
+	}
+	Timestamp::Timestamp(qint64 sec, qint64 nsec) {
+		epochSec = sec;
+		nanoSec = nsec;
+		tz = QTimeZone::systemTimeZone();
+	}
 
 	qint64 Timestamp::secs() { return epochSec; }
 	qint64 Timestamp::nsecs() { return nanoSec; }
@@ -22,5 +30,12 @@ namespace Orloj {
 		);
 		return txt;
 	}
-
+	
+	int Timestamp::year() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().year(); }
+	int Timestamp::month() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().month(); }
+	int Timestamp::day() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().day(); }
+	int Timestamp::hour() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().hour(); }
+	int Timestamp::minute() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().minute(); }
+	int Timestamp::second() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().second() ; }
+	
 }

@@ -17,7 +17,6 @@ public:
 	void onTick();
 
 private:
-
 	Clock clock;
 };
 
