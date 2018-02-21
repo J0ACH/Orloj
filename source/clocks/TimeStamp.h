@@ -27,7 +27,7 @@ namespace Orloj {
 		int hour();
 		int minute();
 		int second();
-		
+				
 	private:
 		qint64 epochSec;
 		qint64 nanoSec;

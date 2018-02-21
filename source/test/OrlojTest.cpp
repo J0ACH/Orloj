@@ -14,15 +14,17 @@ int main(int argc, char *argv[]) {
 
 
 OrlojTestApplication::OrlojTestApplication(QObject *parent) {
-	qDebug() << clock.now().secs();
-	clock.now().decomposeDate();
-	
-	//connect(&clock, SIGNAL(timeout()), this, SLOT(onTick()));
-	//clock.start(1000);
+	//qDebug() << clock.now().secs();
+	//qDebug() << clock.now().second();
+
+	connect(&clock, SIGNAL(timeout()), this, SLOT(onTick()));
+	clock.start(1000);
 }
 
 void OrlojTestApplication::onTick() {
-	qDebug() << clock.now().toString();
+	//qDebug() << clock.now().toString();
+	Timestamp ts = clock.now();
+	qDebug() << "sec:" << ts.second() << " nsec: " << ts.nsecs();
 }
 
 

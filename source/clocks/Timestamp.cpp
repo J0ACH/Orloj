@@ -30,12 +30,12 @@ namespace Orloj {
 		);
 		return txt;
 	}
-	
+
 	int Timestamp::year() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().year(); }
 	int Timestamp::month() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().month(); }
 	int Timestamp::day() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().day(); }
 	int Timestamp::hour() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().hour(); }
 	int Timestamp::minute() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().minute(); }
-	int Timestamp::second() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().second() ; }
-	
+	int Timestamp::second() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().second(); }	
+
 }
