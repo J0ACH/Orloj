@@ -21,6 +21,8 @@ namespace Orloj {
 		qint64 nsecs();
 		
 		QString toString();
+		quint64 toBundle();
+
 		int year();
 		int month();
 		int day();

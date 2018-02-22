@@ -5,9 +5,8 @@
 using namespace Orloj;
 
 int main(int argc, char *argv[]) {
-
 	QApplication app(argc, argv);
-	qDebug() << "Orloj test";
+	//qDebug() << "Orloj test";
 	OrlojTestApplication test;
 	return app.exec();
 }
@@ -25,6 +24,7 @@ void OrlojTestApplication::onTick() {
 	//qDebug() << clock.now().toString();
 	Timestamp ts = clock.now();
 	qDebug() << "sec:" << ts.second() << " nsec: " << ts.nsecs();
+	qDebug() << "bundle" << ts.toBundle();
 }
 
 

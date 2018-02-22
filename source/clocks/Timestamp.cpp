@@ -30,6 +30,15 @@ namespace Orloj {
 		);
 		return txt;
 	}
+	
+	quint64 Timestamp::toBundle() {
+		quint32 second_1900_1970 = 2208988800; // pozn.: pocet sekund bez 17 prestupnych let 
+		quint32 second_1900_now = second_1900_1970 + epochSec;
+		quint64 sec2osc = 4294967296; // pow(2,32)/1
+		double nanos2osc = 4.294967296; // pow(2,32)/1e9
+		quint64 bundle = second_1900_now * sec2osc + nanoSec * nanos2osc;
+		return bundle;
+	}
 
 	int Timestamp::year() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().year(); }
 	int Timestamp::month() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().month(); }
