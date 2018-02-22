@@ -70,6 +70,17 @@ namespace Orloj {
 		start(3000);
 	}
 
+	// Timeline /////////////////////////////////////////////////////
+
+	Timeline::Timeline() {
+		time.setTimerType(Qt::PreciseTimer);
+	}
+
+	void Timeline::start() { time.start(); }
+
+	void Timeline::schedAbs(double t, const QObject *receiver, const char *method) {
+		QObject::connect(&time, SIGNAL(timeout()), receiver, method);
+	}
 
 
 }

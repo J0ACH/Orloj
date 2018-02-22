@@ -29,9 +29,9 @@ namespace Orloj
 		Clock(QObject *parent = Q_NULLPTR);
 
 		Timestamp now();
-		
+
 		void schedAbs(Timestamp t, const QObject *receiver, const char *method);
-		
+
 
 	private:
 
@@ -41,6 +41,23 @@ namespace Orloj
 		void tick();
 
 		//void restartTime();
+	};
+
+	// Timeline /////////////////////////////////////////////////////
+
+	class Timeline
+	{
+
+	public:
+		Timeline();
+
+		void start();
+
+		void schedAbs(double t, const QObject *receiver, const char *method);
+		
+
+	private:
+		QTimer time;
 	};
 }
 
