@@ -15,6 +15,7 @@ public:
 
 	public slots :
 	void onTick();
+	void onSchedAbs();
 
 private:
 	Clock clock;

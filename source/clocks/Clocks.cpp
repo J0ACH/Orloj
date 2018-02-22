@@ -11,7 +11,7 @@ namespace Orloj {
 		setTimerType(Qt::PreciseTimer);
 		//connect(this, SIGNAL(timeout()), this, SLOT(tick()));
 
-		qDebug() << "START" << initTime.toString();
+		//qDebug() << "START" << initTime.toString();
 		//qint64 syncNsecs = 1000000000 - initTime.nsecs();
 
 
@@ -62,6 +62,12 @@ namespace Orloj {
 		seconds secs = duration_cast<seconds>(sinceEpoch);
 		nanoseconds nsecs = sinceEpoch - secs;
 		return Timestamp(secs.count(), nsecs.count());
+	}
+
+	void Clock::schedAbs(Timestamp t, const QObject *receiver, const char *method) {
+		qDebug() << "Clock::schedAbs t:" << t.toString();
+		connect(this, SIGNAL(timeout()), receiver, method);
+		start(3000);
 	}
 
 

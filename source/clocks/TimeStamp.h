@@ -15,6 +15,7 @@ namespace Orloj {
 	{
 	public:
 		Timestamp();
+		Timestamp(double t);
 		Timestamp(qint64 sec, qint64 nsec);
 
 		qint64 secs();
@@ -29,13 +30,15 @@ namespace Orloj {
 		int hour();
 		int minute();
 		int second();
+
+		Timestamp operator+(Timestamp &other);
+		Timestamp operator+=(Timestamp &other);
 				
 	private:
 		qint64 epochSec;
 		qint64 nanoSec;
 
-		QTimeZone tz;
-		
+		QTimeZone tz;		
 	};
 
 }

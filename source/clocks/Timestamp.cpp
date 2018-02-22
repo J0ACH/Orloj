@@ -10,11 +10,17 @@ namespace Orloj {
 		nanoSec = 0;
 		tz = QTimeZone::systemTimeZone();
 	}
+	Timestamp::Timestamp(double t) {
+		epochSec = (qint64)t;
+		nanoSec = (t - epochSec) * 1000000000;
+		tz = QTimeZone::systemTimeZone();
+	}
 	Timestamp::Timestamp(qint64 sec, qint64 nsec) {
 		epochSec = sec;
 		nanoSec = nsec;
 		tz = QTimeZone::systemTimeZone();
 	}
+
 
 	qint64 Timestamp::secs() { return epochSec; }
 	qint64 Timestamp::nsecs() { return nanoSec; }
@@ -23,14 +29,21 @@ namespace Orloj {
 		QString txt, nulls;
 		int cnt = std::to_string(nanoSec).size();
 		for (int i = 0; i < (9 - cnt); i++) { nulls += "0"; }
-		txt = QString("secs: %1 || nsec: %2%3").arg(
+		txt = QString("Timestamp [%1.%2%3]").arg(
 			QString::number(epochSec),
 			nulls,
 			QString::number(nanoSec)
 		);
 		return txt;
+		/*
+		int cnt = std::to_string(nanosec).size();
+		double nano = nanosec / pow(10, cnt);
+		double eTime = epochsec + nano;
+		emit print(tr("epochTime                 : %1").arg(QString::number(eTime, 'f', cnt)));
+		return eTime;
+		*/
 	}
-	
+
 	quint64 Timestamp::toBundle() {
 		quint32 second_1900_1970 = 2208988800; // pozn.: pocet sekund bez 17 prestupnych let 
 		quint32 second_1900_now = second_1900_1970 + epochSec;
@@ -45,6 +58,17 @@ namespace Orloj {
 	int Timestamp::day() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).date().day(); }
 	int Timestamp::hour() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().hour(); }
 	int Timestamp::minute() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().minute(); }
-	int Timestamp::second() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().second(); }	
+	int Timestamp::second() { return QDateTime::fromSecsSinceEpoch(epochSec, tz).time().second(); }
+
+	Timestamp Timestamp::operator+(Timestamp & other) {
+		return Timestamp(epochSec + other.secs(), nanoSec + other.nsecs());
+	}
+	Timestamp Timestamp::operator+=(Timestamp & other) {
+		epochSec += other.secs();
+		nanoSec += other.nsecs();
+		return *this;
+	}
+
+
 
 }

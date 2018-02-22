@@ -29,8 +29,9 @@ namespace Orloj
 		Clock(QObject *parent = Q_NULLPTR);
 
 		Timestamp now();
-
-		//void sched(Timestamp t);
+		
+		void schedAbs(Timestamp t, const QObject *receiver, const char *method);
+		
 
 	private:
 
