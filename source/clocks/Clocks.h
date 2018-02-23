@@ -19,30 +19,6 @@
 namespace Orloj
 {
 
-	// Clocks /////////////////////////////////////////////////////
-
-	class Clock : public QTimer
-	{
-		Q_OBJECT
-
-	public:
-		Clock(QObject *parent = Q_NULLPTR);
-
-		Timestamp now();
-
-		void schedAbs(Timestamp t, const QObject *receiver, const char *method);
-
-
-	private:
-
-		Timestamp initTime;
-
-		private slots:
-		void tick();
-
-		//void restartTime();
-	};
-
 	// SystemClock /////////////////////////////////////////////////////
 
 	class SystemClock {
@@ -50,6 +26,7 @@ namespace Orloj
 		SystemClock();
 
 		Timestamp now();
+		Timestamp toQuant(int n);
 
 		void connectOnSec(const QObject *receiver, const char *method);
 
