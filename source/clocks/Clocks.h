@@ -51,6 +51,8 @@ namespace Orloj
 
 		Timestamp now();
 
+		void connectOnSec(const QObject *receiver, const char *method);
+
 	private:
 		Timestamp initStamp;
 		QTimer time;
@@ -82,7 +84,7 @@ namespace Orloj
 		void start();
 
 		void schedAbs(double t, const QObject *receiver, const char *method);
-		
+
 
 	private:
 		QTimer time;

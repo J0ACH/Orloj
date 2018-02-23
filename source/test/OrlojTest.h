@@ -18,7 +18,7 @@ public:
 	void onSchedAbs();
 
 private:
-	Clock clock;
+	SystemClock clock;
 };
 
 

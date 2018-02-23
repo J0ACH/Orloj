@@ -17,7 +17,7 @@ OrlojTestApplication::OrlojTestApplication(QObject *parent) {
 	//clock.start(1000);
 	//clock.schedAbs(a, this, SLOT(onSchedAbs()));
 
-	SystemClock sc;
+	clock.connectOnSec(this, SLOT(onTick()));
 	//sc.cycleTest(10);
 	
 	/*
@@ -32,9 +32,9 @@ OrlojTestApplication::OrlojTestApplication(QObject *parent) {
 
 void OrlojTestApplication::onTick() {
 	//qDebug() << clock.now().toString();
-	Timestamp ts = clock.now();
-	qDebug() << "sec:" << ts.second() << " nsec: " << ts.nsecs();
-	qDebug() << "bundle" << ts.toBundle();
+	//Timestamp ts = clock.now();
+	qDebug() << clock.now().toString();
+	//qDebug() << "bundle" << ts.toBundle();
 }
 
 void OrlojTestApplication::onSchedAbs() {

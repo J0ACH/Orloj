@@ -73,27 +73,35 @@ namespace Orloj {
 	// SystemClock /////////////////////////////////////////////////////
 
 	SystemClock::SystemClock() {
-
 		using namespace std::chrono;
 		system_clock::time_point timePoint = system_clock::now();
 		system_clock::duration sinceEpoch = timePoint.time_since_epoch();
 		seconds secs = duration_cast<seconds>(sinceEpoch);
 		nanoseconds nsecs = sinceEpoch - secs;
 		initStamp = Timestamp(secs.count(), nsecs.count());
-		//qint64 restTime = 1000000000 - initStamp.nsecs();
 		qint64 restTime = 10e8 - initStamp.nsecs();
-		qDebug() << "initStam:" << initStamp.nsecs();
-		qDebug() << "restTime:" << restTime;
+		//qDebug() << "initStam:" << initStamp.nsecs();
+		//qDebug() << "restTime:" << restTime;
 		int msec = qRound(restTime * 10e-7);
-		qDebug() << "msec:" << msec;
-		//connect(&clock, SIGNAL(timeout()), this, SLOT(onTick()));
-		time.setInterval(msec);
-		time.start();
+		//qDebug() << "msec:" << msec;
+
+		time.setTimerType(Qt::PreciseTimer);
+		time.setInterval(1000);
+		QTimer::singleShot(msec, &time, SLOT(start()));
 	}
 
 	Timestamp SystemClock::now() {
 		//return initStamp + Timestamp(0, time.nsecsElapsed());
-		return Timestamp();
+		using namespace std::chrono;
+		system_clock::time_point timePoint = system_clock::now();
+		system_clock::duration sinceEpoch = timePoint.time_since_epoch();
+		seconds secs = duration_cast<seconds>(sinceEpoch);
+		nanoseconds nsecs = sinceEpoch - secs;
+		return Timestamp(secs.count(), nsecs.count());
+	}
+
+	void SystemClock::connectOnSec(const QObject *receiver, const char *method) {
+		QObject::connect(&time, SIGNAL(timeout()), receiver, method);
 	}
 
 	// NanoClock /////////////////////////////////////////////////////
