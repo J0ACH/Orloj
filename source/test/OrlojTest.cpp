@@ -13,20 +13,21 @@ int main(int argc, char *argv[]) {
 
 
 OrlojTestApplication::OrlojTestApplication(QObject *parent) {
-	//qDebug() << clock.now().secs();
-	//qDebug() << clock.now().second();
-
-	Timestamp a(3.0950);
-	Timestamp b(1);
-	Timestamp c = a + b;
-	//qDebug() << "sec:" << a.second() << " nsec: " << a.nsecs();
-	qDebug() << a.toString();
-	qDebug() << b.toString();
-	qDebug() << c.toString();
-
 	//connect(&clock, SIGNAL(timeout()), this, SLOT(onTick()));
 	//clock.start(1000);
-	clock.schedAbs(a, this, SLOT(onSchedAbs()));
+	//clock.schedAbs(a, this, SLOT(onSchedAbs()));
+
+	SystemClock sc;
+	//sc.cycleTest(10);
+	
+	/*
+	qDebug() << sc.now().toString(); 
+	Timestamp a = sc.now();
+	Timestamp b = sc.now();
+	qDebug() << a.toString();
+	qDebug() << b.toString();
+	*/
+	
 }
 
 void OrlojTestApplication::onTick() {

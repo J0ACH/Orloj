@@ -10,7 +10,7 @@
 #include <QDebug>
 #include <QString>
 #include <QTimer>
-//#include <QElapsedTimer>
+#include <QElapsedTimer>
 //#include <QDeadlineTimer>
 //#include <QThread>
 
@@ -41,6 +41,34 @@ namespace Orloj
 		void tick();
 
 		//void restartTime();
+	};
+
+	// SystemClock /////////////////////////////////////////////////////
+
+	class SystemClock {
+	public:
+		SystemClock();
+
+		Timestamp now();
+
+	private:
+		Timestamp initStamp;
+		QTimer time;
+	};
+
+	// NanoClock /////////////////////////////////////////////////////
+
+	class NanoClock {
+	public:
+		NanoClock();
+
+		Timestamp now();
+
+		void cycleTest(int cnt);
+
+	private:
+		Timestamp initStamp;
+		QElapsedTimer time;
 	};
 
 	// Timeline /////////////////////////////////////////////////////

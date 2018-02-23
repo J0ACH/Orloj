@@ -70,6 +70,61 @@ namespace Orloj {
 		start(3000);
 	}
 
+	// SystemClock /////////////////////////////////////////////////////
+
+	SystemClock::SystemClock() {
+
+		using namespace std::chrono;
+		system_clock::time_point timePoint = system_clock::now();
+		system_clock::duration sinceEpoch = timePoint.time_since_epoch();
+		seconds secs = duration_cast<seconds>(sinceEpoch);
+		nanoseconds nsecs = sinceEpoch - secs;
+		initStamp = Timestamp(secs.count(), nsecs.count());
+		//qint64 restTime = 1000000000 - initStamp.nsecs();
+		qint64 restTime = 10e8 - initStamp.nsecs();
+		qDebug() << "initStam:" << initStamp.nsecs();
+		qDebug() << "restTime:" << restTime;
+		int msec = qRound(restTime * 10e-7);
+		qDebug() << "msec:" << msec;
+		//connect(&clock, SIGNAL(timeout()), this, SLOT(onTick()));
+		time.setInterval(msec);
+		time.start();
+	}
+
+	Timestamp SystemClock::now() {
+		//return initStamp + Timestamp(0, time.nsecsElapsed());
+		return Timestamp();
+	}
+
+	// NanoClock /////////////////////////////////////////////////////
+
+	NanoClock::NanoClock() {
+
+		using namespace std::chrono;
+		system_clock::time_point timePoint = system_clock::now();
+		system_clock::duration sinceEpoch = timePoint.time_since_epoch();
+		seconds secs = duration_cast<seconds>(sinceEpoch);
+		nanoseconds nsecs = sinceEpoch - secs;
+		initStamp = Timestamp(secs.count(), nsecs.count());
+
+		time.start();
+	}
+
+	Timestamp NanoClock::now() {
+		return initStamp + Timestamp(0, time.nsecsElapsed());
+	}
+
+	void NanoClock::cycleTest(int cnt) {
+		QList<qint64> a;
+		for (int i = 0; i < cnt; i++) {
+			a.append(time.nsecsElapsed());
+			//if (a[i] > 5) { qDebug(); }
+		}
+		for (int i = 0; i < cnt; i++) {
+			qDebug() << Timestamp(0, a[i]).toString();
+		}
+	}
+
 	// Timeline /////////////////////////////////////////////////////
 
 	Timeline::Timeline() {
