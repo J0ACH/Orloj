@@ -4,7 +4,7 @@
 #include <chrono>
 #include <thread>
 
-#include "Timestamp.h"
+#include "Timetag.h"
 
 //#include <QTime>
 #include <QDebug>
@@ -25,13 +25,13 @@ namespace Orloj
 	public:
 		SystemClock();
 
-		Timestamp now();
-		Timestamp toQuant(int n);
+		Timetag now();
+		Timetag toQuant(int n);
 
 		void connectOnSec(const QObject *receiver, const char *method);
 
 	private:
-		Timestamp initStamp;
+		Timetag initStamp;
 		QTimer time;
 	};
 
@@ -41,12 +41,12 @@ namespace Orloj
 	public:
 		NanoClock();
 
-		Timestamp now();
+		Timetag now();
 
 		void cycleTest(int cnt);
 
 	private:
-		Timestamp initStamp;
+		Timetag initStamp;
 		QElapsedTimer time;
 	};
 

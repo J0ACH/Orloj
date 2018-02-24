@@ -17,9 +17,10 @@ public:
 	void onTick();
 	void onSchedAbs();
 
+	void printTag(Timetag tag);
+
 private:
 	SystemClock clock;
 };
-
 
 #endif //  ORLOJTESTER_H
