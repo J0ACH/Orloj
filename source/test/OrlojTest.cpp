@@ -14,26 +14,30 @@ int main(int argc, char *argv[]) {
 OrlojTestApplication::OrlojTestApplication(QObject *parent) {
 
 	/*
-	*/
 	Timetag zero;
 	printTag(zero);
 	Timetag current = clock.now();
 	printTag(current);
 	Timetag a(1.0075);
 	printTag(a);
+	qDebug() << a.toDouble();
+	//qDebug() << a.toTime();
 	Timetag b(1, 500);
 	printTag(b);
+	*/
 
-	clock.connectOnSec(this, SLOT(onTick()));
+	//clock.connectOnSec(this, SLOT(onTick()));
 
 	/*
-	Timetag a = Timetag(1.5);
-	Timetag b = Timetag(0.15);
-	Timetag c = a - b;
-	qDebug() << a.toString();
-	qDebug() << b.toString();
-	qDebug() << c.toString();
 	*/
+	Timetag a;// = Timetag(1.5);
+	Timetag b = Timetag(0,10000);
+	Timetag c = a + b;
+	Timetag d = a - b;
+	printTag(a);
+	printTag(b);
+	printTag(c);
+	printTag(d);
 
 }
 

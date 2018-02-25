@@ -11,18 +11,26 @@ namespace Orloj {
 		tz = QTimeZone::systemTimeZone();
 	}
 	Timetag::Timetag(double t) {
-		eSec = (qint64)t;
-		nSec = (t - eSec) * 1000000000;
+		eSec = qFloor(t);
+		nSec = (t - eSec) * 10e8;
 		tz = QTimeZone::systemTimeZone();
 	}
-	Timetag::Timetag(qint64 sec, qint64 nanosec) {
-		eSec = sec;
+	Timetag::Timetag(qint64 epochsec, qint64 nanosec) {
+		eSec = epochsec;
 		nSec = nanosec;
 		tz = QTimeZone::systemTimeZone();
 	}
 
 	qint64 Timetag::epochSecs() { return eSec; }
 	qint64 Timetag::nanoSecs() { return nSec; }
+
+	int Timetag::year() { return QDateTime::fromSecsSinceEpoch(eSec, tz).date().year(); }
+	int Timetag::month() { return QDateTime::fromSecsSinceEpoch(eSec, tz).date().month(); }
+	int Timetag::day() { return QDateTime::fromSecsSinceEpoch(eSec, tz).date().day(); }
+	int Timetag::hour() { return QDateTime::fromSecsSinceEpoch(eSec, tz).time().hour(); }
+	int Timetag::minute() { return QDateTime::fromSecsSinceEpoch(eSec, tz).time().minute(); }
+	int Timetag::second() { return QDateTime::fromSecsSinceEpoch(eSec, tz).time().second(); }
+	int Timetag::milisecond() { return qRound(nSec * 10e-7); }
 
 	QString Timetag::toString(TimeForm form) {
 		QString txt, txtNanoSec;
@@ -51,14 +59,14 @@ namespace Orloj {
 		case Orloj::Timetag::FULL:
 			txtNanoSec = QString("%1").arg(nSec, 9, 10, QChar('0'));
 			txtNanoSec.resize(3, QChar('0'));
-			txt = QString("%1.%2.%3, %4:%5:%6::%7")
+			txt = QString("%1.%2.%3, %4:%5:%6.%7")
 				.arg(day(), 2, 10, QChar('0'))
 				.arg(month(), 2, 10, QChar('0'))
 				.arg(year())
 				.arg(hour(), 2, 10, QChar('0'))
 				.arg(minute(), 2, 10, QChar('0'))
 				.arg(second(), 2, 10, QChar('0'))
-				.arg(txtNanoSec);
+				.arg(milisecond(), 3, 10, QChar('0'));
 			break;
 		case Orloj::Timetag::DATE:
 			txt = QString("%1/%2/%3")
@@ -90,13 +98,8 @@ namespace Orloj {
 		double nano = nSec * 10e-10;
 		return eSec + nano;
 	}
-
-	int Timetag::year() { return QDateTime::fromSecsSinceEpoch(eSec, tz).date().year(); }
-	int Timetag::month() { return QDateTime::fromSecsSinceEpoch(eSec, tz).date().month(); }
-	int Timetag::day() { return QDateTime::fromSecsSinceEpoch(eSec, tz).date().day(); }
-	int Timetag::hour() { return QDateTime::fromSecsSinceEpoch(eSec, tz).time().hour(); }
-	int Timetag::minute() { return QDateTime::fromSecsSinceEpoch(eSec, tz).time().minute(); }
-	int Timetag::second() { return QDateTime::fromSecsSinceEpoch(eSec, tz).time().second(); }
+	QDate Timetag::toDate() { return QDate(year(), month(), day()); }
+	QTime Timetag::toTime() { return QTime(hour(), minute(), second(), milisecond()); }
 
 	Timetag Timetag::operator+(Timetag & other) {
 		return Timetag(eSec + other.epochSecs(), nSec + other.nanoSecs());
