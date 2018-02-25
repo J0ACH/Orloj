@@ -13,39 +13,28 @@ int main(int argc, char *argv[]) {
 
 OrlojTestApplication::OrlojTestApplication(QObject *parent) {
 
-
+	/*
+	*/
 	Timetag zero;
 	printTag(zero);
-
 	Timetag current = clock.now();
 	printTag(current);
-
 	Timetag a(1.0075);
 	printTag(a);
-
-	Timetag b(1, 5);
+	Timetag b(1, 500);
 	printTag(b);
-	
-	clock.connectOnSec(this, SLOT(onTick()));
-	
 
-	//clock.now().toString();
+	clock.connectOnSec(this, SLOT(onTick()));
 
 	/*
-	Timetag zero;
-
-	qDebug() << "yaer:" << zero.year();
-
-	//qDebug() << sc.now().toString();
-	//Timetag a = sc.now();
-	Timetag a = Timetag(1, 5);
-	Timetag b = Timetag(0, 15);
+	Timetag a = Timetag(1.5);
+	Timetag b = Timetag(0.15);
 	Timetag c = a - b;
-
 	qDebug() << a.toString();
 	qDebug() << b.toString();
 	qDebug() << c.toString();
 	*/
+
 }
 
 void OrlojTestApplication::printTag(Timetag tag) {
@@ -55,6 +44,7 @@ void OrlojTestApplication::printTag(Timetag tag) {
 	qDebug() << "toString FULL    :" << tag.toString(Timetag::FULL);
 	qDebug() << "toString DATE    :" << tag.toString(Timetag::DATE);
 	qDebug() << "toString TIME    :" << tag.toString(Timetag::TIME);
+	qDebug() << "toString DOUBLE  :" << tag.toString(Timetag::DOUBLE);
 
 
 }

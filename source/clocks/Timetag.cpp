@@ -26,10 +26,30 @@ namespace Orloj {
 
 	QString Timetag::toString(TimeForm form) {
 		QString txt, txtNanoSec;
+		int lastIndex;
+
 		switch (form)
 		{
+		case Orloj::Timetag::EPOCH:
+		default:
+			txt = QString("%1.%2")
+				.arg(eSec, 10, 10, QChar('0'))
+				.arg(nSec, 9, 10, QChar('0'));
+			break;
+		case Orloj::Timetag::BUNDLE:
+			txt = QString::number(toBundle());
+			break;
+		case Orloj::Timetag::DOUBLE:
+			txtNanoSec = QString("%1").arg(nSec, 9, 10, QChar('0'));
+			lastIndex = txtNanoSec.lastIndexOf(QRegExp("[1-9]")) + 1;
+			txtNanoSec.chop(txtNanoSec.size() - lastIndex);
+			if (txtNanoSec.isEmpty()) { txtNanoSec = "0"; }
+			txt = QString("%1.%2")
+				.arg(eSec)
+				.arg(txtNanoSec);
+			break;
 		case Orloj::Timetag::FULL:
-			txtNanoSec = QString("%1").arg(nSec, 9, 10, QChar('0'));//QString::number(nSec);
+			txtNanoSec = QString("%1").arg(nSec, 9, 10, QChar('0'));
 			txtNanoSec.resize(3, QChar('0'));
 			txt = QString("%1.%2.%3, %4:%5:%6::%7")
 				.arg(day(), 2, 10, QChar('0'))
@@ -39,9 +59,6 @@ namespace Orloj {
 				.arg(minute(), 2, 10, QChar('0'))
 				.arg(second(), 2, 10, QChar('0'))
 				.arg(txtNanoSec);
-			break;
-		case Orloj::Timetag::BUNDLE:
-			txt = QString::number(toBundle());
 			break;
 		case Orloj::Timetag::DATE:
 			txt = QString("%1/%2/%3")
@@ -55,12 +72,6 @@ namespace Orloj {
 				.arg(minute(), 2, 10, QChar('0'))
 				.arg(second(), 2, 10, QChar('0'));
 			break;
-		case Orloj::Timetag::EPOCH:
-		default:
-			txt = QString("%1.%2")
-				.arg(eSec, 10, 10, QChar('0'))
-				.arg(nSec, 9, 10, QChar('0'));
-			break;
 		}
 
 		return txt;
@@ -73,6 +84,11 @@ namespace Orloj {
 		double nanos2osc = 4.294967296; // pow(2,32)/1e9
 		quint64 bundle = second_1900_now * sec2osc + nSec * nanos2osc;
 		return bundle;
+	}
+
+	double Timetag::toDouble() {
+		double nano = nSec * 10e-10;
+		return eSec + nano;
 	}
 
 	int Timetag::year() { return QDateTime::fromSecsSinceEpoch(eSec, tz).date().year(); }
