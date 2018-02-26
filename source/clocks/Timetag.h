@@ -30,15 +30,19 @@ namespace Orloj {
 		int second();
 		int milisecond();
 				
-		QString toString(TimeForm form = TimeForm::EPOCH);
-		quint64 toBundle();
 		double toDouble();
+		QString toString(TimeForm form = TimeForm::DOUBLE);
+		quint64 toBundle();
 		QDate toDate();
 		QTime toTime();
+
+		void setDate(QDate date);
+		void setDate(int y, int m, int d);
 
 		Timetag operator+(Timetag &other);
 		Timetag operator-(Timetag &other);
 		Timetag operator+=(Timetag &other);
+		Timetag operator-=(Timetag &other);
 
 	private:
 		qint64 eSec;

@@ -11,6 +11,7 @@ namespace Orloj {
 		tz = QTimeZone::systemTimeZone();
 	}
 	Timetag::Timetag(double t) {
+		//if (t < 0) { t = 0; } // ??? min 1-1-1970 
 		eSec = qFloor(t);
 		nSec = (t - eSec) * 10e8;
 		tz = QTimeZone::systemTimeZone();
@@ -31,6 +32,8 @@ namespace Orloj {
 	int Timetag::minute() { return QDateTime::fromSecsSinceEpoch(eSec, tz).time().minute(); }
 	int Timetag::second() { return QDateTime::fromSecsSinceEpoch(eSec, tz).time().second(); }
 	int Timetag::milisecond() { return qRound(nSec * 10e-7); }
+
+	double Timetag::toDouble() { return eSec + nSec * 10e-10; }
 
 	QString Timetag::toString(TimeForm form) {
 		QString txt, txtNanoSec;
@@ -86,7 +89,7 @@ namespace Orloj {
 	}
 
 	quint64 Timetag::toBundle() {
-		quint32 second_1900_1970 = 2208988800; // pozn.: pocet sekund bez 17 prestupnych let 
+		quint32 second_1900_1970 = 2208988800; // pozn.: pocet sekund pri zapocteni 17 prestupnych let 
 		quint32 second_1900_now = second_1900_1970 + eSec;
 		quint64 sec2osc = 4294967296; // pow(2,32)/1
 		double nanos2osc = 4.294967296; // pow(2,32)/1e9
@@ -94,23 +97,22 @@ namespace Orloj {
 		return bundle;
 	}
 
-	double Timetag::toDouble() {
-		double nano = nSec * 10e-10;
-		return eSec + nano;
-	}
 	QDate Timetag::toDate() { return QDate(year(), month(), day()); }
 	QTime Timetag::toTime() { return QTime(hour(), minute(), second(), milisecond()); }
 
-	Timetag Timetag::operator+(Timetag & other) {
-		return Timetag(eSec + other.epochSecs(), nSec + other.nanoSecs());
-	}
-	Timetag Timetag::operator-(Timetag & other) {
-		return Timetag(eSec - other.epochSecs(), nSec - other.nanoSecs());
-	}
+	void Timetag::setDate(QDate date) { eSec = QDateTime(date, toTime()).toSecsSinceEpoch(); }
+	void Timetag::setDate(int y, int m, int d) { Timetag::setDate(QDate(y, m, d)); }
+
+	Timetag Timetag::operator+(Timetag & other) { return Timetag(toDouble() + other.toDouble()); }
+	Timetag Timetag::operator-(Timetag & other) { return Timetag(toDouble() - other.toDouble()); }
 	Timetag Timetag::operator+=(Timetag & other) {
 		eSec += other.epochSecs();
 		nSec += other.nanoSecs();
 		return *this;
 	}
-
+	Timetag Timetag::operator-=(Timetag & other) {
+		eSec -= other.epochSecs();
+		nSec -= other.nanoSecs();
+		return *this;
+	}
 }

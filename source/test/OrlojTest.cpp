@@ -30,8 +30,10 @@ OrlojTestApplication::OrlojTestApplication(QObject *parent) {
 
 	/*
 	*/
-	Timetag a;// = Timetag(1.5);
-	Timetag b = Timetag(0,10000);
+	Timetag a(0.05);// = Timetag(1.5);
+	a.setDate(QDate(2000, 1, 1));
+	Timetag b(-10.1);
+	b.setDate(1970, 1, 10);
 	Timetag c = a + b;
 	Timetag d = a - b;
 	printTag(a);
